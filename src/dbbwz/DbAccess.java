@@ -6,7 +6,7 @@ import java.util.List;
 public class DbAccess {
     private String url = "jdbc:mysql://localhost:3306/classicmodels";
     private String user = "root";
-    private String pass = "ims2022?Ja-Rappi";
+    private String pass = "{password}";
 
     public DbAccess(String url, String user, String pass) {
         this.url = url;
@@ -88,5 +88,56 @@ public class DbAccess {
 
         return kunde;
     }
+
+    public List<Produkte> getFilteredProdukte(String filterProductLine) {
+        List<Produkte> filteredProdukte = new ArrayList<>();
+
+        try {
+            Connection con = connectToDatabase();
+            String abfrage = "SELECT productCode, productName, productLine, productVendor, quantityInStock, buyPrice FROM products WHERE productLine = ?";
+
+            try (PreparedStatement preparedStatement = con.prepareStatement(abfrage)) {
+                preparedStatement.setString(1, filterProductLine);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    Produkte produkt = mapResultSetToProdukt(resultSet);
+                    filteredProdukte.add(produkt);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return filteredProdukte;
+    }
+
+    public List<Kunde> searchUser(String filterUser) {
+        List<Kunde> filteredUsers = new ArrayList<>();
+
+        try {
+            Connection con = connectToDatabase();
+            String abfrage = "SELECT customerNumber, customerName, contactLastName, contactFirstName, postalCode, city, state FROM customers WHERE customerName LIKE ?";
+
+            try (PreparedStatement preparedStatement = con.prepareStatement(abfrage)) {
+                preparedStatement.setString(1, filterUser + "%");
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Kunde kunde = mapResultSetToKunde(resultSet);
+                        filteredUsers.add(kunde);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return filteredUsers;
+    }
+
+
+
 
 }

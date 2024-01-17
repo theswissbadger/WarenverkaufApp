@@ -24,7 +24,7 @@ public class WarenverkaufModel {
             System.out.print("Bitte wählen Sie eine Option (1-4): ");
 
             int option = scanner.nextInt();
-            scanner.nextLine();  // Clear the newline character from the buffer
+            scanner.nextLine();
 
             switch (option) {
                 case 1:
@@ -34,15 +34,22 @@ public class WarenverkaufModel {
                     if (filterChoice == 'n') {
                         displayAllProducts();
                     } else {
-                        System.out.println("Setzen Sie den Filter");
-                        // Hier kannst du Logik für die Filterung hinzufügen
+                        System.out.print("Geben Sie die Produktlinie ein: ");
+                        String productLineFilter = scanner.nextLine();
+                        displayFilteredProducts(productLineFilter);
+                        break;
                     }
                     break;
-
-
                 case 2:
-                    displayAllUsers();
+                    displayAllCustomers();
                     break;
+
+                case 3:
+                    System.out.println("Geben sie den Namen ein: ");
+                    String customerFilter = scanner.nextLine();
+                    displayFilteredCustomers(customerFilter);
+                    break;
+
 
                 case 4:
                     System.out.println("Die App wird beendet.");
@@ -63,13 +70,41 @@ public class WarenverkaufModel {
         }
     }
 
-    private void displayAllUsers() {
-        DbAccess dbAccess = new DbAccess("jdbc:mysql://localhost:3306/classicmodels", "root", "ims2022?Ja-Rappi");
+    private void displayAllCustomers() {
+        DbAccess dbAccess = new DbAccess("jdbc:mysql://localhost:3306/classicmodels", "root", "{password}");
         List<Kunde> kunden = dbAccess.getKunden();
         System.out.println("Alle Produkte:");
 
         for (Kunde kunde : kunden) {
             System.out.println(kunde);
+        }
+    }
+
+    private void displayFilteredProducts(String productLineFilter) {
+        DbAccess dbAccess = new DbAccess("jdbc:mysql://localhost:3306/classicmodels", "root", "{password}");
+        List<Produkte> filteredProducts = dbAccess.getFilteredProdukte(productLineFilter);
+
+        if (filteredProducts.isEmpty()) {
+            System.out.println("Keine Produkte für die angegebene Produktlinie gefunden.");
+        } else {
+            System.out.println("Gefilterte Produkte für Produktlinie '" + productLineFilter + "':");
+            for (Produkte produkt : filteredProducts) {
+                System.out.println(produkt);
+            }
+        }
+    }
+
+    private void displayFilteredCustomers(String filterUser) {
+        DbAccess dbAccess = new DbAccess("jdbc:mysql://localhost:3306/classicmodels", "root", "ims2022?Ja-Rappi");
+        List<Kunde> filteredUsers = dbAccess.searchUser(filterUser);
+
+        if (filteredUsers.isEmpty()) {
+            System.out.println("Keine Kunden mit diesem Namen gefunden.");
+        } else {
+
+            for (Kunde kunde : filteredUsers) {
+                System.out.println(kunde);
+            }
         }
     }
 }
