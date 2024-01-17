@@ -54,4 +54,39 @@ public class DbAccess {
         produkt.setBuyPrice(resultSet.getDouble("buyPrice"));
         return produkt;
     }
+
+    public List<Kunde> getKunden(){
+        List<Kunde> kunden = new ArrayList<>();
+
+        try {
+            Connection con = connectToDatabase();
+            Statement statement = con.createStatement();
+            String abfrage = "SELECT customerNumber, customerName, contactLastName, contactFirstName, postalCode, city, state FROM customers";
+            ResultSet resultSet = statement.executeQuery(abfrage);
+
+            while (resultSet.next()) {
+                Kunde kunde = mapResultSetToKunde(resultSet);
+                kunden.add(kunde);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return kunden;
+    }
+
+    private Kunde mapResultSetToKunde(ResultSet resultSet) throws SQLException {
+        Kunde kunde = new Kunde();
+        kunde.setCustomerNumber(resultSet.getInt("customerNumber"));
+        kunde.setCustomerName(resultSet.getString("customerName"));
+        kunde.setContactFirstName(resultSet.getString("contactFirstName"));
+        kunde.setContactLastName(resultSet.getString("contactLastName"));
+        kunde.setPostalCode(resultSet.getString("postalCode"));
+        kunde.setCity(resultSet.getString("city"));
+        kunde.setState(resultSet.getString("state"));
+
+        return kunde;
+    }
+
 }
