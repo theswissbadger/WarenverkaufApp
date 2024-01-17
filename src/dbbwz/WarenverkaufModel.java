@@ -3,13 +3,13 @@ package dbbwz;
 import java.util.List;
 import java.util.Scanner;
 
-public class View {
+public class WarenverkaufModel {
     private DbAccess dbAccess;
 
-    public View(DbAccess dbAccess) {
+    public WarenverkaufModel(DbAccess dbAccess) {
         this.dbAccess = dbAccess;
     }
-    public View(){
+    public WarenverkaufModel(){
 
     }
 
