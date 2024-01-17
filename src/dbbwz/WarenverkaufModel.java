@@ -95,7 +95,7 @@ public class WarenverkaufModel {
     }
 
     private void displayFilteredCustomers(String filterUser) {
-        DbAccess dbAccess = new DbAccess("jdbc:mysql://localhost:3306/classicmodels", "root", "ims2022?Ja-Rappi");
+        DbAccess dbAccess = new DbAccess("jdbc:mysql://localhost:3306/classicmodels", "root", "{password}");
         List<Kunde> filteredUsers = dbAccess.searchUser(filterUser);
 
         if (filteredUsers.isEmpty()) {
