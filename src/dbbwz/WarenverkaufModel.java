@@ -61,7 +61,7 @@ public class WarenverkaufModel {
     }
 
     private void displayAllProducts() {
-        DbAccess dbAccess = new DbAccess("jdbc:mysql://localhost:3306/classicmodels", "root", "ims2022?Ja-Rappi");
+        DbAccess dbAccess = new DbAccess("jdbc:mysql://localhost:3306/classicmodels", "root", "{password}");
         List<Produkte> produkte = dbAccess.getProdukte();
         System.out.println("Alle Produkte:");
 
