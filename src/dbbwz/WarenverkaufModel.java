@@ -19,20 +19,32 @@ public class WarenverkaufModel {
         while (true) {
             System.out.println("1. Alle Produkte anzeigen");
             System.out.println("2. Alle Benutzer anzeigen");
-            System.out.println("3. App beenden");
-            System.out.print("Bitte wählen Sie eine Option (1-3): ");
+            System.out.println("3. Einen Kunden suchen");
+            System.out.println("4. App beenden");
+            System.out.print("Bitte wählen Sie eine Option (1-4): ");
 
             int option = scanner.nextInt();
             scanner.nextLine();  // Clear the newline character from the buffer
 
             switch (option) {
                 case 1:
-                    displayAllProducts();
+                    System.out.println("Wollen Sie einen Filter setzen? y/n ");
+                    char filterChoice = scanner.nextLine().charAt(0);
+
+                    if (filterChoice == 'n') {
+                        displayAllProducts();
+                    } else {
+                        System.out.println("Setzen Sie den Filter");
+                        // Hier kannst du Logik für die Filterung hinzufügen
+                    }
                     break;
+
+
                 case 2:
                     displayAllUsers();
                     break;
-                case 3:
+
+                case 4:
                     System.out.println("Die App wird beendet.");
                     return;
                 default:
